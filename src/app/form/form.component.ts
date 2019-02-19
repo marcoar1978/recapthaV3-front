@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Form, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { ReCaptchaV3Service } from 'ngx-captcha';
 import { HttpClient } from '@angular/common/http';
+import { ResponseRecaptha } from '../model/ResponseGoogle';
+import { KeysGoogle } from '../model/KeysGoogle';
+
 
 
 @Component({
@@ -13,11 +16,14 @@ import { HttpClient } from '@angular/common/http';
 
 export class FormComponent implements OnInit {
 
-  siteKey = '6LftCZEUAAAAAGMpTzqFZZXkf3IXMuK8rpIM1Jyx';
+  chaves:KeysGoogle = new KeysGoogle(); 
   aFormGroup: FormGroup;
   msgToken:string = "";
+  msgTokenInsussesso:string = "";
   msgToken2 = [];
-  
+ // produto:string = "xx";
+  //preco:string = "xx";
+
   constructor(private reCaptchaV3Service: ReCaptchaV3Service,
               private formBuilder: FormBuilder,
               private http: HttpClient) { }
@@ -28,21 +34,35 @@ export class FormComponent implements OnInit {
       preco:['', Validators.required]
     });
 
+    this.aFormGroup.get('produto').setValue('Blue ray');
+    this.aFormGroup.get('preco').setValue('1000');
     }
 
- 
+    
+    
  cadastrar(){
   
     if(this.aFormGroup.invalid){
-      this.msgToken = `Todos os daddos são obrigatórios`;
+      this.msgToken = `Todos os dados são obrigatórios`;
 
     }
  else{
-  this.reCaptchaV3Service.execute(this.siteKey, 'homepage', (token) => {
-    this.msgToken = token;
-    this.http.post('http://localhost:3000/enviaTokenGoogle', {'g-recaptcha-response': token})
+  this.reCaptchaV3Service.execute(this.chaves.key , 'homepage', (token) => {
+    this.msgToken = "";
+    this.msgTokenInsussesso = "";
+    this.http.post<ResponseRecaptha>('http://localhost:3000/enviaTokenGoogle', {'g-recaptcha-response': token})
       .subscribe(res => {
-          console.log(res);
+        let responseRecaptha = res;
+         
+        if(responseRecaptha.score >= 0.5){
+            this.msgToken = `Score: ${responseRecaptha.score} (Teste Ok)`;
+            
+            }
+        else{
+            this.msgTokenInsussesso = `Score: ${responseRecaptha.score} (Solicitação duvidosa)`;
+        }    
+
+       
       })
 
 
@@ -52,27 +72,8 @@ export class FormComponent implements OnInit {
  }
 }
 
-cadastrar2(){
-  
-  if(this.aFormGroup.invalid){
-    this.msgToken = `Todos os daddos são obrigatórios`;
 
-  }
-else{
-  try {
-    this.reCaptchaV3Service.execute("6LfchpEUAAAAAGUvLbXFayplmN-0OeAbMv2jPxxS", 'homepage', (token) => {
-      this.msgToken = token;
-      this.http.post('http://localhost:3000/enviaTokenGoogle', {'g-recaptcha-response': token})
-        .subscribe(res => {
-            console.log(res);
-        })
-      }, {
-       useGlobalDomain: false
-      });
-  } catch(err) {
-    console.log(err);
-  }
-}
-}
+
 
 }
+
