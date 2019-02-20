@@ -1,17 +1,28 @@
 <div class="container">
 <br><br>
-<form [formGroup]="aFormGroup" method='POST'>
+<form [formGroup]="aFormGroup" (ngSubmit)="onSubmit()">
   <table width='400' align='center'>
       <tr height='30'>
           <td colspan='2' align='center'><b> Teste recaptha v3</b><td>
        </tr> 
       <tr height='30'>
         <td>Produto</td>
-        <td><input type='text' formControlName='produto' id='produto' name='produto' class='form-control' value='xx'  name='produto'></td>
+        <td><input type='text' formControlName='produto' class='form-control'>
+          
+          
+          <small class="text-danger" style='color:red' *ngIf="submitted && aFormGroup.get('produto').hasError('required')" >Produto é requerido</small>
+        </td>
      </tr> 
      <tr height='30'>
         <td>Preço</td>
-        <td><input type='text' formControlName='preco' id='preco' name='preco'  class='form-control' value='xx'  name='preco'></td>
+        <td>
+            <input type='text' formControlName='preco' class='form-control'>
+            
+            <small class="text-danger" style='color:red' *ngIf="submitted && aFormGroup.get('preco').hasError('required')">Preço é requerido</small>
+            
+        
+        
+        </td>
      </tr>  
   <tr>
     <td colspan='2'>
@@ -24,7 +35,7 @@
   <table width='400' align='center'>
 
   <tr>
-    <td align='center'><button (click)="cadastrar()" class="btn btn-primary" >Teste Cadastro</button></td>  
+    <td align='center'><button class="btn btn-primary" >Teste Cadastro</button></td>  
     
     
     
@@ -42,5 +53,7 @@
       <td align='center' style='color:red'><span id='msgTokenFalha'>{{msgTokenInsussesso}}</span></td>
     </tr>
  </table>
+ <br>
+
 
 

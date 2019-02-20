@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalDialogModule } from 'ngx-modal-dialog';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ModalModule  } from 'ngx-modal';
+
 
 
 @Component({
@@ -12,6 +13,13 @@ export class FormModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+
+  mostraModal(){
+        
+    
+    
   }
 
 }

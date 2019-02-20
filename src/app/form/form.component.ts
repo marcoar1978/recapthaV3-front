@@ -19,8 +19,10 @@ export class FormComponent implements OnInit {
   chaves:KeysGoogle = new KeysGoogle(); 
   aFormGroup: FormGroup;
   msgToken:string = "";
+  
   msgTokenInsussesso:string = "";
   msgToken2 = [];
+  submitted = false;
  // produto:string = "xx";
   //preco:string = "xx";
 
@@ -34,17 +36,19 @@ export class FormComponent implements OnInit {
       preco:['', Validators.required]
     });
 
-    this.aFormGroup.get('produto').setValue('Blue ray');
-    this.aFormGroup.get('preco').setValue('1000');
+    //this.aFormGroup.get('produto').setValue('Blue ray');
+    //this.aFormGroup.get('preco').setValue('1000');
     }
 
+  get f(){ return this.aFormGroup.controls; }
     
     
- cadastrar(){
-  
-    if(this.aFormGroup.invalid){
-      this.msgToken = `Todos os dados são obrigatórios`;
+  onSubmit(){
+    this.submitted = true;
 
+    if(this.aFormGroup.invalid){
+      this.msgToken = '';
+      return;
     }
  else{
   this.reCaptchaV3Service.execute(this.chaves.key , 'homepage', (token) => {

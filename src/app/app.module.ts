@@ -11,6 +11,7 @@ import { Pagina1Component } from './pagina1/pagina1.component';
 import { FormComponent } from './form/form.component';
 import { FormModalComponent } from './form-modal/form-modal.component';
 import { ModalDialogModule } from 'ngx-modal-dialog';
+import { FormModal2Component } from './form-modal2/form-modal2.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ModalDialogModule } from 'ngx-modal-dialog';
     AppComponent,
     Pagina1Component,
     FormComponent,
-    FormModalComponent
+    FormModalComponent,
+    FormModal2Component
     
   ],
   imports: [
